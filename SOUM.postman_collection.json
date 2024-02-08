@@ -1,0 +1,134 @@
+{
+	"info": {
+		"_postman_id": "357bf434-fb25-4313-ac49-4a8433e4ba3b",
+		"name": "SOUM",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3592319"
+	},
+	"item": [
+		{
+			"name": "API-TEST-SOUM",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Content-Type is application/json\", function () {\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Validate the responseData object\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responseData).to.be.an('object');\r",
+							"    pm.expect(responseData.responseData).to.exist.and.to.be.an('object');\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Product images array is present and not empty in each result\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"  pm.expect(responseData.responseData.results).to.be.an('array');\r",
+							"  responseData.responseData.results.forEach(function(result) {\r",
+							"    pm.expect(result.product_images).to.exist.and.to.be.an('array').and.to.have.lengthOf.at.least(1, \"Product images array should not be empty\");\r",
+							"  });\r",
+							"});\r",
+							"\r",
+							"var template = `\r",
+							"<style type=\"text/css\">\r",
+							"    .tftable {font-size:14px;color:#333333;width:100%;border-width: 1px;border-color: #87ceeb;border-collapse: collapse;}\r",
+							"    .tftable th {font-size:18px;background-color:#87ceeb;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;text-align:left;}\r",
+							"    .tftable tr {background-color:#ffffff;}\r",
+							"    .tftable td {font-size:14px;border-width: 1px;padding: 8px;border-style: solid;border-color: #87ceeb;}\r",
+							"    .tftable tr:hover {background-color:#e0ffff;}\r",
+							"</style>\r",
+							"\r",
+							"<table class=\"tftable\" border=\"1\">\r",
+							"    <tr>\r",
+							"        <th>Product ID</th>\r",
+							"        <th>User ID</th>\r",
+							"        <th>Category ID</th>\r",
+							"        <th>Brand ID</th>\r",
+							"        <th>Model ID</th>\r",
+							"        <th>Variant ID</th>\r",
+							"        <th>Description</th>\r",
+							"        <th>Sell Price</th>\r",
+							"        <th>Bid Price</th>\r",
+							"    </tr>\r",
+							"    \r",
+							"    {{#each response.responseData.results}}\r",
+							"        <tr>\r",
+							"            <td>{{id}}</td>\r",
+							"            <td>{{user_id}}</td>\r",
+							"            <td>{{category_id}}</td>\r",
+							"            <td>{{brand_id}}</td>\r",
+							"            <td>{{model_id}}</td>\r",
+							"            <td>{{varient_id}}</td>\r",
+							"            <td>{{description}}</td>\r",
+							"            <td>{{sell_price}}</td>\r",
+							"            <td>{{bid_price}}</td>\r",
+							"        </tr>\r",
+							"    {{/each}}\r",
+							"</table>\r",
+							"`;\r",
+							"\r",
+							"function constructVisualizerPayload() {\r",
+							"    return { response: pm.response.json() }\r",
+							"}\r",
+							"\r",
+							"pm.visualizer.set(template, constructVisualizerPayload());\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "lang",
+						"value": "en",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api.qa.soum.sa/api-v2/rest/api/v1/product/?page%20number=2&size=3",
+					"protocol": "https",
+					"host": [
+						"api",
+						"qa",
+						"soum",
+						"sa"
+					],
+					"path": [
+						"api-v2",
+						"rest",
+						"api",
+						"v1",
+						"product",
+						""
+					],
+					"query": [
+						{
+							"key": "page%20number",
+							"value": "2"
+						},
+						{
+							"key": "size",
+							"value": "3"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
